@@ -2,7 +2,10 @@ package com.devtiro.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -26,4 +29,10 @@ public class User {
     // TODO: Attending events
 
     // TODO: Staffing events
+    @CreatedDate
+    @Column(updatable = false,nullable = false)
+    private LocalDate createdAt;
+    @LastModifiedDate
+    @Column(updatable = true,nullable = false)
+    private LocalDate updatedAt;
 }
