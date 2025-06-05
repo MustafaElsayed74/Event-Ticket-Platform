@@ -33,6 +33,6 @@ public class User {
     @Column(updatable = false,nullable = false)
     private LocalDate createdAt;
     @LastModifiedDate
-    @Column(updatable = true,nullable = false)
+    @Column(nullable = false)
     private LocalDate updatedAt;
 }
