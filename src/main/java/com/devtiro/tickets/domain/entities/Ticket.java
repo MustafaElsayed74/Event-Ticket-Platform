@@ -39,8 +39,8 @@ public class Ticket {
     @JoinColumn(name = "purchaser_id")
     private User user;
 
-
-    //TODO: QrCode Reference
+    @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL)
+    private List<QrCode> qrCodes = new ArrayList<>();
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<TicketValidation> validations = new ArrayList<>();
