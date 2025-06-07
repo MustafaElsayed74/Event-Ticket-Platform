@@ -1,5 +1,6 @@
 package com.devtiro.tickets.domain.entities;
 
+import com.devtiro.tickets.domain.enums.TicketStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,33 +12,38 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "ticket_types")
-@Getter
-@Setter
+@Table(name = "tickets")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
-public class TicketType {
+public class Ticket {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private TicketStatusEnum status;
 
-    @Column(nullable = false)
-    private Double price;
 
-    @Column(nullable = true)
-    private Integer totalAvailable;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
-    private Event event;
+    @JoinColumn(name = "ticket_type_id")
+    private TicketType ticketType;
 
-    @OneToMany(mappedBy = "ticketType")
-    private List<Ticket> tickets  = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchaser_id")
+    private User user;
+
+
+    //TODO: QrCode Reference
+
+    //TODO: Ticket Validation Reference
 
 
     @CreatedDate
@@ -47,4 +53,5 @@ public class TicketType {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
 }
