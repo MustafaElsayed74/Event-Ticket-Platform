@@ -1,25 +1,23 @@
 package com.devtiro.tickets.domain.entities;
 
-import com.devtiro.tickets.domain.enums.TicketStatusEnum;
+import com.devtiro.tickets.domain.enums.TicketValidationMethodEnum;
+import com.devtiro.tickets.domain.enums.TicketValidationStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tickets")
-@NoArgsConstructor
+@Table(name = "ticket_validations")
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Ticket {
-
+public class TicketValidation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,30 +25,24 @@ public class Ticket {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private TicketStatusEnum status;
+    private TicketValidationStatusEnum status;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TicketValidationMethodEnum validationMethod;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_type_id")
-    private TicketType ticketType;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "purchaser_id")
-    private User user;
-
-
-    //TODO: QrCode Reference
-
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private List<TicketValidation> validations = new ArrayList<>();
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
 
 }
