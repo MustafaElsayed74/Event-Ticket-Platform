@@ -6,7 +6,6 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +28,11 @@ public class Event {
     @Column(nullable = false)
     private String name;
 
-    private LocalDateTime start;
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
 
-    private LocalDateTime end;
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
 
     @Column(nullable = false)
     private String venue;
@@ -54,12 +55,11 @@ public class Event {
     @ManyToMany(mappedBy = "staffingEvents")
     private List<User> staff = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<TicketType> ticketTypes = new ArrayList<>();
 
     @CreatedDate
-    @Column(nullable = false,updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
@@ -70,12 +70,20 @@ public class Event {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(id, event.id) && Objects.equals(name, event.name) && Objects.equals(start, event.start) && Objects.equals(end, event.end) && Objects.equals(venue, event.venue) && Objects.equals(salesStart, event.salesStart) && Objects.equals(salesEnd, event.salesEnd) && status == event.status && Objects.equals(createdAt, event.createdAt) && Objects.equals(updatedAt, event.updatedAt);
+        return Objects.equals(id, event.id) &&
+                Objects.equals(name, event.name) &&
+                Objects.equals(startTime, event.startTime) &&
+                Objects.equals(endTime, event.endTime) &&
+                Objects.equals(venue, event.venue) &&
+                Objects.equals(salesStart, event.salesStart) &&
+                Objects.equals(salesEnd, event.salesEnd) &&
+                status == event.status &&
+                Objects.equals(createdAt, event.createdAt) &&
+                Objects.equals(updatedAt, event.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, start, end, venue, salesStart, salesEnd, status, createdAt, updatedAt);
+        return Objects.hash(id, name, startTime, endTime, venue, salesStart, salesEnd, status, createdAt, updatedAt);
     }
 }
-
