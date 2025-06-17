@@ -1,6 +1,6 @@
 package com.devtiro.tickets.services.impl;
 
-import com.devtiro.tickets.domain.dtos.CreateEventRequest;
+import com.devtiro.tickets.domain.CreateEventRequest;
 import com.devtiro.tickets.domain.entities.Event;
 import com.devtiro.tickets.domain.entities.TicketType;
 import com.devtiro.tickets.domain.entities.User;
@@ -42,8 +42,8 @@ public class EventServiceImpl implements EventService {
         }).toList();
 
         eventToCreate.setName(event.getName());
-        eventToCreate.setStartTime(event.getStartTime());
-        eventToCreate.setEndTime(event.getEndTime());
+        eventToCreate.setStart(event.getStartTime());
+        eventToCreate.setEnd(event.getEndTime());
         eventToCreate.setVenue(event.getVenue());
         eventToCreate.setSalesStart(event.getSalesStart());
         eventToCreate.setSalesEnd(event.getSalesEnd());

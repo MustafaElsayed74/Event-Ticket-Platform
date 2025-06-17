@@ -28,11 +28,11 @@ public class Event {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "start_time")
-    private LocalDateTime startTime;
+    @Column(name = "start")
+    private LocalDateTime start;
 
-    @Column(name = "end_time")
-    private LocalDateTime endTime;
+    @Column(name = "\"end\"")
+    private LocalDateTime end;
 
     @Column(nullable = false)
     private String venue;
@@ -72,8 +72,8 @@ public class Event {
         Event event = (Event) o;
         return Objects.equals(id, event.id) &&
                 Objects.equals(name, event.name) &&
-                Objects.equals(startTime, event.startTime) &&
-                Objects.equals(endTime, event.endTime) &&
+                Objects.equals(start, event.start) &&
+                Objects.equals(end, event.end) &&
                 Objects.equals(venue, event.venue) &&
                 Objects.equals(salesStart, event.salesStart) &&
                 Objects.equals(salesEnd, event.salesEnd) &&
@@ -84,6 +84,6 @@ public class Event {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, startTime, endTime, venue, salesStart, salesEnd, status, createdAt, updatedAt);
+        return Objects.hash(id, name, start, end, venue, salesStart, salesEnd, status, createdAt, updatedAt);
     }
 }

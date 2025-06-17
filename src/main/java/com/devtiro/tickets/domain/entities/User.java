@@ -19,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
+//    @GeneratedValue
     private UUID id;
     @Column(nullable = false)
     private String name;
