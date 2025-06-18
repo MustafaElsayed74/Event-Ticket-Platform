@@ -17,8 +17,8 @@ import java.util.UUID;
 public class CreateEventResponseDto {
     private UUID id;
     private String name;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private String venue;
     private LocalDateTime salesStart;
     private LocalDateTime salesEnd;
