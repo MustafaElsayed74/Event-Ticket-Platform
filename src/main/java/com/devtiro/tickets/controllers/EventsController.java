@@ -50,6 +50,7 @@ public class EventsController {
 
 
 
+
     private UUID getUserId(Jwt jwt){
         return UUID.fromString(jwt.getSubject());
     }
