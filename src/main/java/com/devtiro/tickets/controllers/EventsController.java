@@ -3,6 +3,7 @@ package com.devtiro.tickets.controllers;
 import com.devtiro.tickets.domain.CreateEventRequest;
 import com.devtiro.tickets.domain.dtos.CreateEventRequestDto;
 import com.devtiro.tickets.domain.dtos.CreateEventResponseDto;
+import com.devtiro.tickets.domain.dtos.GetEventDetailsResponseDto;
 import com.devtiro.tickets.domain.dtos.ListEventResponseDto;
 import com.devtiro.tickets.domain.entities.Event;
 import com.devtiro.tickets.mappers.EventMapper;
@@ -17,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -47,7 +49,12 @@ public class EventsController {
     }
 
 
-
+    @GetMapping("{event_id}")
+    public ResponseEntity<GetEventDetailsResponseDto> getEventForOrganizer(@AuthenticationPrincipal Jwt jwt,@PathVariable UUID event_id){
+        UUID userId = getUserId(jwt);
+        Optional<Event> eventForOrganizer = eventService.getEventForOrganizer(userId, event_id);
+        return ResponseEntity.ok(mapper.toGetEventDetailsResponseDto(eventForOrganizer.get()));
+    }
 
 
 
