@@ -52,8 +52,10 @@ public class EventsController {
     @GetMapping("{event_id}")
     public ResponseEntity<GetEventDetailsResponseDto> getEventForOrganizer(@AuthenticationPrincipal Jwt jwt,@PathVariable UUID event_id){
         UUID userId = getUserId(jwt);
-        Optional<Event> eventForOrganizer = eventService.getEventForOrganizer(userId, event_id);
-        return ResponseEntity.ok(mapper.toGetEventDetailsResponseDto(eventForOrganizer.get()));
+         return eventService.getEventForOrganizer(userId,event_id)
+                .map(mapper::toGetEventDetailsResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 
