@@ -2,6 +2,8 @@ package com.devtiro.tickets.mappers;
 
 import com.devtiro.tickets.domain.CreateEventRequest;
 import com.devtiro.tickets.domain.CreateTicketTypeRequest;
+import com.devtiro.tickets.domain.UpdateEventRequest;
+import com.devtiro.tickets.domain.UpdateTicketTypeRequest;
 import com.devtiro.tickets.domain.dtos.*;
 import com.devtiro.tickets.domain.entities.Event;
 import com.devtiro.tickets.domain.entities.TicketType;
@@ -15,7 +17,6 @@ public interface EventMapper {
 
     CreateEventRequest fromDto(CreateEventRequestDto dto);
 
-
     CreateEventResponseDto toDto(Event event);
 
     ListTicketTypeResponseDto toDto(TicketType ticketType);
@@ -25,4 +26,12 @@ public interface EventMapper {
     GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
 
     GetTicketTypeDetailsResponseDto toGetTicketTypeDetailsResponseDto(TicketType ticketType);
+
+    UpdateTicketTypeRequest fromDto(UpdateTicketTypeRequestDto dto);
+
+    UpdateEventRequest fromDto(UpdateEventRequestDto dto);
+
+    UpdateTicketTypeResponseDto toUpdateTicketTypeResponseDto(TicketType ticketType);
+
+    UpdateEventResponseDto toUpdateEventResponseDto(Event event);
 }

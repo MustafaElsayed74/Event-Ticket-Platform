@@ -1,10 +1,7 @@
 package com.devtiro.tickets.controllers;
 
 import com.devtiro.tickets.domain.CreateEventRequest;
-import com.devtiro.tickets.domain.dtos.CreateEventRequestDto;
-import com.devtiro.tickets.domain.dtos.CreateEventResponseDto;
-import com.devtiro.tickets.domain.dtos.GetEventDetailsResponseDto;
-import com.devtiro.tickets.domain.dtos.ListEventResponseDto;
+import com.devtiro.tickets.domain.dtos.*;
 import com.devtiro.tickets.domain.entities.Event;
 import com.devtiro.tickets.mappers.EventMapper;
 import com.devtiro.tickets.services.EventService;
@@ -18,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -34,14 +30,14 @@ public class EventsController {
         CreateEventRequest eventRequest = mapper.fromDto(createEventRequestDto);
         UUID userId = getUserId(jwt);
         Event CreatedEvent = eventService.createEvent(userId, eventRequest);
-        CreateEventResponseDto createEventResponseDto  = mapper.toDto(CreatedEvent);
+        CreateEventResponseDto createEventResponseDto = mapper.toDto(CreatedEvent);
 
         return new ResponseEntity<>(createEventResponseDto, HttpStatus.CREATED);
 
     }
 
     @GetMapping
-    public ResponseEntity<Page<ListEventResponseDto>> listEvents(@AuthenticationPrincipal Jwt jwt,Pageable pageable){
+    public ResponseEntity<Page<ListEventResponseDto>> listEvents(@AuthenticationPrincipal Jwt jwt, Pageable pageable) {
         UUID userId = getUserId(jwt);
         Page<Event> events = eventService.listEventsForOrganizer(userId, pageable);
 
@@ -49,18 +45,30 @@ public class EventsController {
     }
 
 
-    @GetMapping("{event_id}")
-    public ResponseEntity<GetEventDetailsResponseDto> getEventForOrganizer(@AuthenticationPrincipal Jwt jwt,@PathVariable UUID event_id){
+    @GetMapping("/{event_id}")
+    public ResponseEntity<GetEventDetailsResponseDto> getEventForOrganizer(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID event_id) {
         UUID userId = getUserId(jwt);
-         return eventService.getEventForOrganizer(userId,event_id)
+        return eventService.getEventForOrganizer(userId, event_id)
                 .map(mapper::toGetEventDetailsResponseDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
 
+    @PutMapping("/{event_id}")
+    public ResponseEntity<UpdateEventResponseDto> updateEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID event_id,
+           @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto
+    ) {
 
-    private UUID getUserId(Jwt jwt){
+        UUID userId = getUserId(jwt);
+        Event updatedEvent = eventService.updateEventForOrganizer(userId, event_id, mapper.fromDto(updateEventRequestDto));
+        return ResponseEntity.ok(mapper.toUpdateEventResponseDto(updatedEvent));
+
+    }
+
+    private UUID getUserId(Jwt jwt) {
         return UUID.fromString(jwt.getSubject());
     }
 
