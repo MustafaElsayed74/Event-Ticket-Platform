@@ -68,6 +68,15 @@ public class EventsController {
 
     }
 
+    @DeleteMapping("{event_id}")
+    public ResponseEntity<HttpStatus> deleteEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID event_id){
+
+        UUID userId = getUserId(jwt);
+        eventService.deleteEventForOrganizer(userId,event_id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
     private UUID getUserId(Jwt jwt) {
         return UUID.fromString(jwt.getSubject());
     }
