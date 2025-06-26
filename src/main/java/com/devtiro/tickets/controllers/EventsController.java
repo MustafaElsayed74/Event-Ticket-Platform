@@ -3,6 +3,7 @@ package com.devtiro.tickets.controllers;
 import com.devtiro.tickets.domain.CreateEventRequest;
 import com.devtiro.tickets.domain.dtos.*;
 import com.devtiro.tickets.domain.entities.Event;
+import com.devtiro.tickets.domain.enums.EventStatusEnum;
 import com.devtiro.tickets.mappers.EventMapper;
 import com.devtiro.tickets.services.EventService;
 import jakarta.validation.Valid;
@@ -59,7 +60,7 @@ public class EventsController {
     public ResponseEntity<UpdateEventResponseDto> updateEvent(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID event_id,
-           @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto
+            @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto
     ) {
 
         UUID userId = getUserId(jwt);
@@ -69,12 +70,14 @@ public class EventsController {
     }
 
     @DeleteMapping("/{event_id}")
-    public ResponseEntity<HttpStatus> deleteEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID event_id){
+    public ResponseEntity<HttpStatus> deleteEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID event_id) {
 
         UUID userId = getUserId(jwt);
-        eventService.deleteEventForOrganizer(userId,event_id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        eventService.deleteEventForOrganizer(userId, event_id);
+        return ResponseEntity.noContent().build();
     }
+
+
 
 
     private UUID getUserId(Jwt jwt) {

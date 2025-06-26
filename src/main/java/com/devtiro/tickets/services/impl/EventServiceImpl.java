@@ -6,6 +6,7 @@ import com.devtiro.tickets.domain.UpdateTicketTypeRequest;
 import com.devtiro.tickets.domain.entities.Event;
 import com.devtiro.tickets.domain.entities.TicketType;
 import com.devtiro.tickets.domain.entities.User;
+import com.devtiro.tickets.domain.enums.EventStatusEnum;
 import com.devtiro.tickets.exceptions.EventNotFoundException;
 import com.devtiro.tickets.exceptions.EventUpdateException;
 import com.devtiro.tickets.exceptions.TicketTypeNotFoundException;
@@ -154,5 +155,10 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public void deleteEventForOrganizer(UUID organizerId, UUID id) {
       getEventForOrganizer(organizerId,id).ifPresent(eventRepository::delete);
+    }
+
+    @Override
+    public Page<Event> listPublishedEvents(Pageable pageable) {
+        return  eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
     }
 }

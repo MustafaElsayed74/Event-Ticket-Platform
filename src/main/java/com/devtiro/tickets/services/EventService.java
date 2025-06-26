@@ -3,6 +3,7 @@ package com.devtiro.tickets.services;
 import com.devtiro.tickets.domain.CreateEventRequest;
 import com.devtiro.tickets.domain.UpdateEventRequest;
 import com.devtiro.tickets.domain.entities.Event;
+import com.devtiro.tickets.domain.enums.EventStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.Optional;
@@ -14,4 +15,5 @@ public interface EventService {
     Optional<Event> getEventForOrganizer(UUID organizerId, UUID id);
     Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event);
     void deleteEventForOrganizer(UUID organizerId, UUID id);
+    Page<Event> listPublishedEvents( Pageable pageable);
 }
