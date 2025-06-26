@@ -68,7 +68,7 @@ public class EventsController {
 
     }
 
-    @DeleteMapping("{event_id}")
+    @DeleteMapping("/{event_id}")
     public ResponseEntity<HttpStatus> deleteEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID event_id){
 
         UUID userId = getUserId(jwt);
