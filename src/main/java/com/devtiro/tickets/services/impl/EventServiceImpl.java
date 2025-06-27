@@ -166,4 +166,9 @@ public class EventServiceImpl implements EventService {
     public Page<Event> searchPublishEvents(String query, Pageable pageable) {
         return eventRepository.searchEvents(query,pageable);
     }
+
+    @Override
+    public Optional<Event> getPublishedEvent(UUID id) {
+        return eventRepository.findByIdAndStatus(id,EventStatusEnum.PUBLISHED);
+    }
 }

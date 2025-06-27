@@ -3,7 +3,6 @@ package com.devtiro.tickets.services;
 import com.devtiro.tickets.domain.CreateEventRequest;
 import com.devtiro.tickets.domain.UpdateEventRequest;
 import com.devtiro.tickets.domain.entities.Event;
-import com.devtiro.tickets.domain.enums.EventStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +23,6 @@ public interface EventService {
     Page<Event> listPublishedEvents(Pageable pageable);
 
     Page<Event> searchPublishEvents(String query, Pageable pageable);
+
+    Optional<Event> getPublishedEvent(UUID id);
 }

@@ -9,11 +9,10 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTicketTypeDetailsResponseDto {
+public class GetPublishedEventDetailsTicketTypeResponseDto {
 
     private UUID id;
     private String name;
     private String description;
     private Double price;
-    private Integer totalAvailable;
 }

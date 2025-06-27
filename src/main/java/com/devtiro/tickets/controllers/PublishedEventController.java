@@ -1,5 +1,6 @@
 package com.devtiro.tickets.controllers;
 
+import com.devtiro.tickets.domain.dtos.GetPublishedEventDetailsResponseDto;
 import com.devtiro.tickets.domain.dtos.ListEventResponseDto;
 import com.devtiro.tickets.domain.dtos.ListPublishedEventResponseDto;
 import com.devtiro.tickets.domain.entities.Event;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -37,5 +35,13 @@ public class PublishedEventController {
         return ResponseEntity.ok(events.map(mapper::toListPublishedEventResponseDto));
     }
 
+    @GetMapping("/{event_id}")
+    public ResponseEntity<GetPublishedEventDetailsResponseDto> getPublishedEvent(@PathVariable UUID event_id){
+
+         return eventService.getPublishedEvent(event_id)
+                 .map(mapper::toGetPublishedEventDetailsResponseDto)
+                 .map(ResponseEntity::ok)
+                 .orElse(ResponseEntity.notFound().build());
+    }
 
 }
