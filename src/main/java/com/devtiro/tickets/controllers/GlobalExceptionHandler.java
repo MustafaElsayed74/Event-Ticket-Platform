@@ -1,10 +1,7 @@
 package com.devtiro.tickets.controllers;
 
 import com.devtiro.tickets.domain.dtos.ErrorDto;
-import com.devtiro.tickets.exceptions.EventNotFoundException;
-import com.devtiro.tickets.exceptions.EventUpdateException;
-import com.devtiro.tickets.exceptions.TicketTypeNotFoundException;
-import com.devtiro.tickets.exceptions.UserNotFoundException;
+import com.devtiro.tickets.exceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +18,14 @@ import java.util.List;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(QrCodeGenerationException.class)
+    public ResponseEntity<ErrorDto> handleQrCodeGenerationException(QrCodeGenerationException ex){
+        log.error("Caught QrCodeGenerationException",ex);
+        ErrorDto errorDto  = new ErrorDto();
+        errorDto.setError("Unable to generate QrCode");
 
+        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     @ExceptionHandler(EventNotFoundException.class)
     public ResponseEntity<ErrorDto> handleEventNotFoundException(EventNotFoundException ex){
         log.error("Caught EventNotFoundException",ex);

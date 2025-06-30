@@ -20,7 +20,6 @@ import java.util.UUID;
 public class QrCode {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
@@ -28,7 +27,7 @@ public class QrCode {
     private QrCodeStatusEnum status;
 
     //QrCode Value
-    @Column(nullable = false )
+    @Column(name = "value",nullable = false, columnDefinition = "TEXT")
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
