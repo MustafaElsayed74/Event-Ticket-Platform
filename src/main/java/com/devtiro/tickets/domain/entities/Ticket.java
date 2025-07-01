@@ -38,7 +38,7 @@ public class Ticket {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchaser_id")
-    private User user;
+    private User purchaser;
 
     @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL)
     private List<QrCode> qrCodes = new ArrayList<>();
