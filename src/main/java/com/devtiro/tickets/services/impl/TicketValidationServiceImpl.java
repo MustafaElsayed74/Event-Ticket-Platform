@@ -56,6 +56,7 @@ public class TicketValidationServiceImpl implements TicketValidationService {
 
     }
 
+
     @Override
     public TicketValidation validateTicketManually(UUID ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
