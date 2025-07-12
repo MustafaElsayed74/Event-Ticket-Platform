@@ -21,6 +21,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
                                 .requestMatchers("/api/v1/events").hasRole("ORGANIZER")
                                 .requestMatchers("/api/v1/ticket-validations").hasRole("STAFF")
+                                .requestMatchers(
+                                        "/swagger-ui.html",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
