@@ -29,43 +29,54 @@ import java.util.UUID;
 import static com.devtiro.tickets.util.JwtUtil.parseUserId;
 
 @RestController
-@RequestMapping("/api/v1/tickets")
+@RequestMapping(path = "/api/v1/tickets")
 @RequiredArgsConstructor
 public class TicketController {
+
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
     private final QrCodeService qrCodeService;
 
     @GetMapping
-    public ResponseEntity<Page<ListTicketResponseDto>> listTickets(@AuthenticationPrincipal Jwt jwt, Pageable pageable) {
-        Page<ListTicketResponseDto> listTicketResponseDtos = ticketService.listTicketsForUser(parseUserId(jwt), pageable)
-                .map(ticketMapper::toListTicketResponseDto);
-
-        return ResponseEntity.ok(listTicketResponseDtos);
-
+    public Page<ListTicketResponseDto> listTickets(
+            @AuthenticationPrincipal Jwt jwt,
+            Pageable pageable
+    ) {
+        return ticketService.listTicketsForUser(
+                parseUserId(jwt),
+                pageable
+        ).map(ticketMapper::toListTicketResponseDto);
     }
 
-
-    @GetMapping("/{ticketId}")
-    public ResponseEntity<GetTicketResponseDto> getTicket(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID ticketId) {
-        return ticketService.getTicketForUser(parseUserId(jwt), ticketId)
+    @GetMapping(path = "/{ticketId}")
+    public ResponseEntity<GetTicketResponseDto> getTicket(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID ticketId
+    ) {
+        return ticketService
+                .getTicketForUser(parseUserId(jwt), ticketId)
                 .map(ticketMapper::toGetTicketResponseDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-
     }
 
-    @GetMapping("/{ticketId}/qr-codes")
-    public ResponseEntity<byte[]> getQrCodeImage(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID ticketId) {
+    @GetMapping(path = "/{ticketId}/qr-codes")
+    public ResponseEntity<byte[]> getTicketQrCode(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID ticketId
+    ) {
+        byte[] qrCodeImage = qrCodeService.getQrCodeImageForUserAndTicket(
+                parseUserId(jwt),
+                ticketId
+        );
 
-        byte[] qrCodeImage = qrCodeService.getQrCodeImageForUserAndTicket(parseUserId(jwt), ticketId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        headers.setContentLength(qrCodeImage.length);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-
-        httpHeaders.setContentType(MediaType.IMAGE_PNG);
-        httpHeaders.setContentLength(qrCodeImage.length);
         return ResponseEntity.ok()
-                .headers(httpHeaders)
+                .headers(headers)
                 .body(qrCodeImage);
     }
+
 }
