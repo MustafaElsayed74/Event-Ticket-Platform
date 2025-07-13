@@ -1,0 +1,34 @@
+services:
+  # Our PostgreSQL database
+  db:
+    # Using the latest PostgreSQL image
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changemeinprod!
+
+  # Database management interface
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8888:8080
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    ports:
+      - "9090:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+    command:
+      - start-dev
+      - --db=dev-file
+
+volumes:
+  keycloak-data:
+    driver: local
